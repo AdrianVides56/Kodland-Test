@@ -6,7 +6,7 @@
 - Enable `CharacterController` component in `Player` for it to be able to move
 
 - `PlayerLook.cs`:
-    - Replaced variable `playerArms` by `camera` in order to rotate just the view in the xAxis
+    - Replaced variable `playerArms` by `cameraRef` in order to rotate just the view in the xAxis
     - Change the scope of the variables `rotPlayer`, `rotCamera`, `rotateX` and `rotateY` to be global (and not initialize them each frame in the `Update` function)
     - Replaced `if...else` statment for the `Mathf.Clamp` function
     - Adjusted `mouseSense` fot it to not be zero.
