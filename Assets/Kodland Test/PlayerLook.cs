@@ -5,39 +5,38 @@ using UnityEngine;
 public class PlayerLook : MonoBehaviour
 {
     [SerializeField] float mouseSense;
-    [SerializeField] Transform player, playerArms;
+    [SerializeField] private Transform player, cameraRef;
 
-    float xAxisClamp = 0;
+    [SerializeField] private float xAxisClamp = 45;
+    
+    float rotateX, rotateY;
+    Vector3 rotPlayer, rotCamera; 
+
+    void Start ()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+
+        rotPlayer = player.rotation.eulerAngles;
+        rotCamera = cameraRef.eulerAngles;
+
+        if (mouseSense <= 0)
+            mouseSense = 1;
+    }
 
     // Update is called once per frame
     void Update()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        rotateX = Input.GetAxis("Mouse X") * mouseSense;
+        rotateY = Input.GetAxis("Mouse Y") * mouseSense;
 
-        float rotateX = Input.GetAxis("Mouse X") * mouseSense;
-        float rotateY = Input.GetAxis("Mouse Y") * mouseSense;
-
-        xAxisClamp -= rotateX;
-
-        Vector3 rotPlayerArms = playerArms.rotation.eulerAngles;
-        Vector3 rotPlayer = player.rotation.eulerAngles;
-
-        rotPlayerArms.x -= rotateY;
-        rotPlayerArms.z = 0;
         rotPlayer.y += rotateX;
 
-        if (xAxisClamp > 90)
-        {
-            xAxisClamp = 90;
-            rotPlayerArms.x = 90;
-        }
-        else if (xAxisClamp < -90)
-        {
-            xAxisClamp = -90;
-            rotPlayerArms.x = 270;
-        }
+        rotCamera.y += rotateX;
+        rotCamera.x -= rotateY;
 
-        playerArms.rotation = Quaternion.Euler(rotPlayerArms);
+        rotCamera.x = Mathf.Clamp(rotCamera.x, -xAxisClamp, xAxisClamp);
+
         player.rotation = Quaternion.Euler(rotPlayer);
+        cameraRef.rotation = Quaternion.Euler(rotCamera);
     }
 }

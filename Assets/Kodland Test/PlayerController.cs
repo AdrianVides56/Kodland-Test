@@ -13,13 +13,16 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private GameObject GameOver;
     [SerializeField] private GameObject Victory;
+    [SerializeField] private CharacterController characterController;
+    
+    Vector3 moveDirection = Vector3.zero;
+    public float speed = 7;
 
     public float health = 0;
 
     void Start()
     {
-        Destroy(this);
-        ChangeHealth(0);
+        ChangeHealth(100); // Change initial health value to not be 0
     }
 
     public void ChangeHealth(int hp)
@@ -52,25 +55,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            GameObject buf = Instantiate(bullet);
-            buf.transform.position = rifleStart.position;
-            buf.GetComponent<Bullet>().setDirection(transform.forward);
-            buf.transform.rotation = transform.rotation;
-        }
-        
-        if (Input.GetMouseButtonDown(1))
-        {
-            Collider[] tar = Physics.OverlapSphere(transform.position, 2);
-            foreach (var item in tar)
-            {
-                if (item.tag == "Enemy")
-                {
-                    Destroy(item.gameObject);
-                }
-            }
-        }
+       CheckMouseInput();
+       CheckKeyboardInput();
 
         Collider[] targets = Physics.OverlapSphere(transform.position, 3);
         foreach (var item in targets)
@@ -89,5 +75,38 @@ public class PlayerController : MonoBehaviour
                 Lost();
             }
         }
+    }
+
+    void CheckMouseInput()
+    {
+         if (Input.GetMouseButtonDown(0))
+        {
+            GameObject buf = Instantiate(bullet);
+            buf.transform.position = rifleStart.position;
+            buf.GetComponent<Bullet>().setDirection(transform.forward);
+            buf.transform.rotation = transform.rotation;
+        }
+        
+        if (Input.GetMouseButtonDown(1))
+        {
+            Collider[] tar = Physics.OverlapSphere(transform.position, 5);
+            foreach (var item in tar)
+            {
+                if (item.tag == "Enemy")
+                {
+                    Destroy(item.gameObject);
+                }
+            }
+        }
+    }
+
+    void CheckKeyboardInput()
+    {
+        Vector3 forward = transform.TransformDirection(Vector3.forward);
+        Vector3 right = transform.TransformDirection(Vector3.right);
+
+        moveDirection = (forward * Input.GetAxis("Vertical")) + (right * Input.GetAxis("Horizontal"));
+
+        characterController.Move(moveDirection * speed * Time.deltaTime);
     }
 }
