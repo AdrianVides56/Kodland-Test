@@ -3,9 +3,7 @@
 
 ---
 
-- [ESP] Review of the changes
-
-<video src="./ChangesReview.mp4" width="320" height="240" controls></video>
+[Vid-Esp]
 
 ### [Review of the changes](https://youtu.be/DeFLIedpwm4)
 
