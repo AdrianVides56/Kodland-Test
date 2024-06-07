@@ -5,7 +5,7 @@
 
 - [ESP] Review of the changes
 
-<video src="ChangesReview.mp4" width="320" height="240" controls></video>
+<video src="./ChangesReview.mp4" width="320" height="240" controls></video>
 
 ---
 
